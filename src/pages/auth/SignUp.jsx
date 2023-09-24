@@ -65,13 +65,35 @@ function SignUp() {
     <>
       <Helmet>
         <title>R09M - 회원가입</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+          property="og:title"
+          content="합리적인 소비를 위한 공동구매 서비스 R09M 회원가입 페이지"
+        />
+        <meta
+          property="twitter:title"
+          content="합리적인 소비를 위한 공동구매 서비스 R09M 회원가입 페이지"
+        />
+        <meta property="og:type" content="web application" />
+        <meta property="og:url" content="https://r09m.vercel.app/signup" />
+        <meta
+          property="og:description"
+          content="R09M 회원가입 페이지입니다. 인증된 사용자만 공동구매에 참여할 수 있습니다."
+        />
+        <meta
+          name="description"
+          content="R09M 회원가입 페이지입니다. 인증된 사용자만 공동구매에 참여할 수 있습니다."
+        ></meta>
+        <meta property="og:image" content="favicon.ico" />
+        <meta property="og:article:author" content="Ready! Act" />
       </Helmet>
       <h1 className="sr-only">R09M</h1>
 
       <div className="px-4 py-2">
         <Header />
         <h2 className="pageTitle">회원가입</h2>
-      </div>
+     
 
       <form encType="multipart/form-data" onSubmit={handleSignUp}>
         <div className="relative flex flex-col gap-2 mt-4">
@@ -137,10 +159,7 @@ function SignUp() {
           inputClassName="authInput"
         />
 
-        <Button
-          type="submit"
-          className="authActiveButton"
-        >
+        <Button type="submit" className="authActiveButton">
           가입
         </Button>
         <Button
@@ -156,6 +175,7 @@ function SignUp() {
       <Link to="/signin">
         <span className="authTransform">로그인</span>
       </Link>
+      </div>
     </>
   );
 }

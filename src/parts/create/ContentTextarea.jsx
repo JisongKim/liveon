@@ -1,19 +1,29 @@
-import {forwardRef, useId} from 'react';
+import { AppContext } from '@/App';
+import { useContext, useEffect, useState } from 'react';
+
 
 function ContentTextarea(
-  {title, placeholder, className, labelClassName, ...restProps},
-  ref
-) {
-  const {id} = useId();
+  { value = "", title, placeholder, className, labelClassName, ...restProps }) {
+  const { updateCreateRoomForm } = useContext(AppContext);
+  const [data, setData] = useState(value);
+
+  useEffect(() => {
+    updateCreateRoomForm('content', data);
+  }, [data]);
+
+  const handleInputChange = (e) => {
+    setData(e.target.value);
+  };
 
   return (
     <>
-      <label htmlFor={id} className={labelClassName}>
-        {title}
+      <label htmlFor="content" className={labelClassName}>
+        내용
       </label>
       <textarea
-        ref={ref}
-        id={id}
+        value={data}
+        onChange={handleInputChange}
+        id="content"
         placeholder={placeholder}
         className={className}
         {...restProps}
@@ -22,4 +32,4 @@ function ContentTextarea(
   );
 }
 
-export default forwardRef(ContentTextarea);
+export default ContentTextarea;

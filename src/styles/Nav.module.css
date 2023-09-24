@@ -9,3 +9,7 @@
 .span {
   @apply text-sm text-greenishgray-500 pt-1;
 }
+
+.navSpan {
+  @apply text-black;
+}

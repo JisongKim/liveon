@@ -1,38 +1,36 @@
-import {useEffect} from 'react';
-// import { detailMapMark } from './detailMapMark';
-import Header from '@/layout/Header';
-import Button from '@/components/Button';
 import {pb} from '@/api/pocketbase';
-import pickup from '@/assets/icons/pickup.svg';
-import {ClientResponseError} from 'pocketbase';
-import {useParams} from 'react-router-dom';
-import {useState} from 'react';
-import {currentLocation} from '@/parts/map/currentLocation';
 import myLocation from '@/assets/icons/myLocation.svg';
+import pickup from '@/assets/icons/pickup.svg';
+import Button from '@/components/Button';
+import Header from '@/layout/Header';
+import {currentLocation} from '@/parts/map/currentLocation';
 import styles from '@/styles/Home.module.css';
-import {Link} from 'react-router-dom';
+import {ClientResponseError} from 'pocketbase';
+import {useRef} from 'react';
+import {useEffect, useState} from 'react';
+import {Link, useParams} from 'react-router-dom';
 
 const {kakao} = window;
 function DetailMap() {
   const {id} = useParams();
+  const detailMapRef = useRef(null);
   const [data, setData] = useState();
 
   useEffect(() => {
     async function detailMapMark() {
       try {
-        const readRecordItem = await pb.collection('products').getOne(id); // 단일 항목 가져오기
+        const readRecordItem = await pb.collection('products').getOne(id);
         setData(readRecordItem);
 
         if (kakao) {
-          const container = document.getElementById('map');
+          const container = detailMapRef.current;
           const options = {
             center: new kakao.maps.LatLng(37.57157200866145, 126.9763416696016),
-            level: 3,
+            level: 5,
           };
           const map = new kakao.maps.Map(container, options);
           const geocoder = new kakao.maps.services.Geocoder();
 
-          // 수정된 항목의 meetingPoint 사용
           const meetingPoint = readRecordItem.meetingPoint;
 
           geocoder.addressSearch(meetingPoint, (result, status) => {
@@ -69,19 +67,21 @@ function DetailMap() {
   return (
     <>
       <div className="px-4 py-2">
-        <Header />
+        <Header link={`/products/${id}`} />
       </div>
-      <div id="map" className="w-full h-[600px] my-3 relative">
+      <div ref={detailMapRef} className="w-full h-[600px] my-3 relative">
+        <h1 className="sr-only">R09M</h1>
         <Button
           type="button"
           className={`${styles.button} right-2 bottom-4 bg-white p-2`}
-          onClick={currentLocation}
+          onClick={()=>{currentLocation(detailMapRef.current)}}
         >
           <img src={myLocation} alt="현재 위치로 가기" className="mx-auto" />
         </Button>
       </div>
 
       <ul>
+        <h2 className="sr-only">현재 위치</h2>
         <li className="flex mb-4 mt-4 items-center">
           <span className="mt-5 mb-18 font-extrabold text-lg">
             {data && data.meetingPoint

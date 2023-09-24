@@ -2,9 +2,9 @@ import currentSpot from '@/assets/icons/currentSpot.svg';
 
 const {kakao} = window;
 
-export function currentLocation() {
+export function currentLocation(mapElement) {
   if (kakao) {
-    const container = document.getElementById('map');
+    const container = mapElement;
     const options = {
       center: new kakao.maps.LatLng(37.57157200866145, 126.9763416696016),
       level: 4,

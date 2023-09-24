@@ -1,9 +1,15 @@
-import {forwardRef, useState} from 'react';
+import { useContext, useEffect, useState } from 'react';
 import minusCircle from '@/assets/icons/minusCircle.svg';
 import plusCircle from '@/assets/icons/plusCircle.svg';
+import { AppContext } from '@/App';
 
-function ParticipateCounter({title}, ref) {
-  const [count, setCount] = useState(0);
+function ParticipateCounter({ value = 0, labelClassName }) {
+  const [count, setCount] = useState(value);
+  const { updateCreateRoomForm } = useContext(AppContext);
+
+  useEffect(() => {
+    updateCreateRoomForm('participateNumber', count);
+  }, [count]);
 
   const incrementCount = () => {
     setCount(count + 1);
@@ -14,13 +20,17 @@ function ParticipateCounter({title}, ref) {
   };
 
   return (
-    <div className="py-4">
-      <label>{title}</label>
-      <div className="flex gap-2 float-right p-2 items-center">
+    <div className="py-2">
+      <label htmlFor="participateCounter" className={labelClassName}>
+        참여자 인원
+      </label>
+      <div value={count} id="participateCounter" className="flex gap-2 float-right p-2 items-center">
         <button type="button" onClick={decrementCount}>
           <img src={minusCircle} alt="minus" />
         </button>
-        <p ref={ref}>{count}</p>
+
+        {count}
+
         <button type="button" onClick={incrementCount}>
           <img src={plusCircle} alt="plus" />
         </button>
@@ -29,4 +39,4 @@ function ParticipateCounter({title}, ref) {
   );
 }
 
-export default forwardRef(ParticipateCounter);
+export default ParticipateCounter;

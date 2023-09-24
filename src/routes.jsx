@@ -1,33 +1,35 @@
+import { lazy } from 'react';
 import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom';
-import CreateRoom from './pages/CreateRoom';
-import Home from './pages/Home';
-import Logo from './pages/Logo';
-import Search from './pages/Search';
-import Profile from './pages/auth/Profile';
-import SignIn from './pages/auth/SignIn';
-import SignUp from './pages/auth/SignUp';
-import ChangeStatus from './pages/details/ChangeStatus';
-import Detail from './pages/details/Detail';
-import DetailMap from './pages/details/DetailMap';
-import DetailStatus from './pages/details/DetailStatus';
-import Fruit from './pages/products/Fruit';
-import Grains from './pages/products/Grains';
-import Meat from './pages/products/Meat';
-import Total from './pages/products/Total';
-import Vegetable from './pages/products/Vegetable';
-import Users from './pages/users/Users';
-import Location from './parts/map/Location';
+
+const CreateRoom = lazy(() => import('./pages/CreateRoom'));
+const Location = lazy(() => import('./parts/map/Location'));
+const Home = lazy(() => import('./pages/Home'));
+const Logo = lazy(() => import('./pages/Logo'));
+const Search = lazy(() => import('./pages/Search'));
+const Profile = lazy(() => import('./pages/auth/Profile'));
+const SignIn = lazy(() => import('./pages/auth/SignIn'));
+const SignUp = lazy(() => import('./pages/auth/SignUp'));
+const ChangeStatus = lazy(() => import('./pages/details/ChangeStatus'));
+const Detail = lazy(() => import('./pages/details/Detail'));
+const DetailMap = lazy(() => import('./pages/details/DetailMap'));
+const Fruit = lazy(() => import('./pages/products/Fruit'));
+const Grains = lazy(() => import('./pages/products/Grains'));
+const Meat = lazy(() => import('./pages/products/Meat'));
+const Total = lazy(() => import('./pages/products/Total'));
+const Vegetable = lazy(() => import('./pages/products/Vegetable'));
+const Users = lazy(() => import('./pages/users/Users'));
+const DetailStatus = lazy(() => import('./pages/details/DetailStatus'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Logo />} />
       <Route path="/home" element={<Home />} />
-      <Route path="/products" element={<Total />} />
+      <Route path="products" element={<Total />} />
       <Route path="vegetable" element={<Vegetable />} />
       <Route path="fruit" element={<Fruit />} />
       <Route path="grains" element={<Grains />} />
@@ -36,13 +38,14 @@ const router = createBrowserRouter(
 
       <Route path="signup" element={<SignUp />} />
       <Route path="signin" element={<SignIn />} />
+
       <Route path="profile" element={<Profile />} />
+      <Route path="profile/:id" element={<ChangeStatus />} />
 
       <Route path="products/:id" element={<Detail />} />
+
       <Route path="products/:id/pickupplace" element={<DetailMap />} />
       <Route path="products/:id/status" element={<DetailStatus />} />
-      <Route path="status/:id" element={<ChangeStatus />} />
-
       <Route path="users/:id" element={<Users />} />
 
       <Route path="createroom" element={<CreateRoom />} />

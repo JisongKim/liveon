@@ -42,10 +42,6 @@
     @apply border;
   }
 
-  .navSpan {
-    @apply text-black;
-  }
-
   .authLabel {
     @apply font-semibold text-greenishgray-800;
   }

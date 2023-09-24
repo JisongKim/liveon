@@ -1,33 +1,32 @@
 import { AppContext } from '@/App';
 import FormInput from '@/components/FormInput';
-import { useState, useContext, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 
-function DatePicker({ value = null, label, title, className, labelClassName, ...restProps }) {
-
+function Title({ value = "" }) {
   const { updateCreateRoomForm } = useContext(AppContext);
   const [data, setData] = useState(value);
 
   useEffect(() => {
-    updateCreateRoomForm('pickUp', data)
+    updateCreateRoomForm('title', data)
   }, [data])
 
   const handleInputChange = (e) => {
     setData(e.target.value);
-  }
+  };
+
   return (
-    <div>
+    <>
       <FormInput
-        value={data || ''}
+        value={data}
         onChange={handleInputChange}
-        type="datetime-local"
-        placeholder="픽업 날짜와 시간을 선택헤주세요"
+        type="text"
+        placeholder="상품명을 입력해주세요."
         labelClassName="product name"
         inputClassName="defaultInput w-full"
-        label={label}
-        {...restProps}
+        label="상품명"
       />
-    </div>
-  )
+    </>
+  );
 }
 
-export default DatePicker
+export default Title;

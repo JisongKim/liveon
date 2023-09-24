@@ -1,6 +1,6 @@
 import {number} from 'prop-types';
 
-function Spinner({size = 200}) {
+function Spinner({size = 100}) {
   return (
     <div>
       <svg
@@ -253,7 +253,6 @@ function Spinner({size = 200}) {
           </rect>
         </g>
       </svg>
-      ;
     </div>
   );
 }

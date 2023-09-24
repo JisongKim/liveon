@@ -1,4 +1,3 @@
-import {string} from 'prop-types';
 import {forwardRef, useState} from 'react';
 // import Input from "@/components/Input";
 
@@ -7,8 +6,10 @@ function TimePicker({title, className, ...restProps}, ref) {
 
   return (
     <div>
+      <label htmlFor="time"></label>
       {title}
       <input
+        id="time"
         ref={ref}
         className={className}
         type="time"
