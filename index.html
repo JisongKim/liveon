@@ -5,34 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       property="og:title"
-      content="자취인 전용 위치기반 커뮤니티 리본(LIVE: ON)"
+      content="자취생을 위한 커뮤니티 LIVE:ON"
     />
     <meta
       property="twitter:title"
-      content="자취인 전용 위치기반 커뮤니티 리본(LIVE: ON)"
+      content="자취생을 위한 커뮤니티 LIVE:ON"
     />
     <meta property="og:type" content="web application" />
-    <meta property="og:url" content="https://LIVEON.vercel.app" />
+    <meta property="og:url" content="https://r09m.vercel.app" />
     <meta
       property="og:description"
-      content="1인가구를 위한 공동구매, 배달음식 등을 쉐어할 수 있는 기능과 생활정보팁을 공유할 수 있는 서비스 입니다"
+      content="자취생을 위한 커뮤니티 LIVE:ON."
     />
-    <meta property="og:image" content="favicon.png" />
-    <meta property="og:article:author" content="Ready! Act" />
+    <meta property="og:image" content="ribbon.png" />
+    <meta property="og:article:author" content="LIVE:ON" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <link
       rel="stylesheet"
       crossorigin
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css"
     />
-    <title>Ready Act!</title>
+    <title>LIVE:ON</title>
     <script type="module" src="/src/main.jsx"></script>
-    <script
-      type="text/javascript"
-      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=00249084ea4fed1443396fa4235cc8c1&libraries=services"></script>
   </head>
 
   <body>
     <div id="root"></div>
+    <script>
+      // Kakao Maps API 비동기 로드
+      function loadKakaoMap() {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=00249084ea4fed1443396fa4235cc8c1&libraries=services&autoload=false`;
+          script.onload = () => kakao.maps.load(resolve);
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+      }
+
+      loadKakaoMap().then(() => {
+        console.log('Kakao Maps API loaded');
+      }).catch((error) => {
+        console.error('Failed to load Kakao Maps API:', error);
+      });
+    </script>
   </body>
 </html>

@@ -64,10 +64,10 @@ function Profile() {
           <title>LIVE:ON - 프로필</title>
           <meta charset="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <meta property="og:title" content="합리적인 소비를 위한 공동구매 서비스 R09M 프로필 페이지" />
-          <meta property="twitter:title" content="합리적인 소비를 위한 공동구매 서비스 R09M 프로필 페이지" />
+          <meta property="og:title" content="자취생을 위한 커뮤니티 서비스 LIVE:ON 프로필 페이지" />
+          <meta property="twitter:title" content="자취생을 위한 커뮤니티 서비스 LIVE:ON 프로필 페이지" />
           <meta property="og:type" content="web application" />
-          <meta property="og:url" content="https://r09m.vercel.app/profile" />
+          <meta property="og:url" content="https://LIVEON.vercel.app/profile" />
           <meta property="og:description" content="로그인된 사용자의 정보 및 판매 상품을 확인할 수 있는 페이지입니다." />
           <meta name="description" content="로그인된 사용자의 정보 및 판매 상품을 확인할 수 있는 페이지입니다." />
           <meta property="og:image" content="favicon.png" />

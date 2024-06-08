@@ -14,7 +14,7 @@ const Profile = lazy(() => import('./pages/auth/Profile'));
 const SignIn = lazy(() => import('./pages/auth/SignIn'));
 const SignUp = lazy(() => import('./pages/auth/SignUp'));
 const ChangeStatus = lazy(() => import('./pages/details/ChangeStatus'));
-const Detail = lazy(() => import('./pages/details/Detail'));
+//const Detail = lazy(() => import('./pages/details/Detail'));
 const PostDetail = lazy(() => import('./pages/details/PostDetail'));
 const ShareDetail = lazy(() => import('./pages/details/ShareDetail'));
 const DetailMap = lazy(() => import('./pages/details/DetailMap'));

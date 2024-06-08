@@ -101,7 +101,7 @@ function Hobby() {
       <div className="bg-line-200 py-2">
         <div className="px-4">
           <Header />
-          <h2 className="pageTitle">취미쉐어</h2>
+          <h2 className="pageTitle">취미</h2>
         </div>
         <ul>
           {data.map(
@@ -112,6 +112,7 @@ function Hobby() {
               content,
               status,
               currentNumber,
+              participate,
               participateNumber,
               title,
               user_id,
@@ -121,7 +122,7 @@ function Hobby() {
               <li className="rounded-2xl p-5 m-6 bg-white" key={id}>
               <Link to={`/products/${id}`}>
                 <span className="font-semibold bg-line-400 text-greenishgray-800 p-2 rounded-xl">
-                  취미쉐어
+                  취미
                 </span>
                 <div className="relative mb-4">
                 <span className={`font-bold absolute ${status === '모집중' ? 'text-primary-500' : status === '쉐어중' ? 'text-primary-300' : 'text-greenishgray-500'}`}>
@@ -144,7 +145,7 @@ function Hobby() {
                   </span>
                 </div>
                 <span className="text-greenishgray-600">
-                  참여 인원 : {currentNumber} / {participateNumber}
+                  참여 인원 : {participate.length} / {participateNumber}
                 </span>
               </div>
 

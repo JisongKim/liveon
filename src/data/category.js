@@ -1,5 +1,5 @@
 export const category = [
-  { img: "/category/sharetotal.svg", title: "전체 쉐어", path: "/products" },
+  { img: "/category/sharetotal.svg", title: "전체", path: "/products" },
   { img: "/category/food.svg", title: "배달쉐어", path: "/food" },
   { img: "/category/shopping.svg", title: "공동구매", path: "/shopping" },
   { img: "/category/hobby.svg", title: "취미", path: "/hobby" },

@@ -6,7 +6,7 @@ function CreateHeader({ ...restProps }) {
   return (
     <div className="relative">
       <Link to="/home">
-        <img src={logo} alt="공구룸 로고" className="w-12 m-auto" />
+        <img src={logo} alt="리본 로고" className="w-12 m-auto" />
       </Link>
       <Link to="/home">
         <img

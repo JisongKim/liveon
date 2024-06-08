@@ -6,7 +6,7 @@ import { FreeMode, Keyboard, Mousewheel } from 'swiper/modules';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { db } from '@/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import logo2 from '@/assets/icons/logo2.svg';
 import myLocation from '@/assets/icons/myLocation.svg';
 import plus from '@/assets/icons/plus.svg';
@@ -22,22 +22,42 @@ import navStyles from '@/styles/Nav.module.css';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 
-let mapCached = false;
 let mapInstance = null;
 
 async function getReadRecordList() {
-  const querySnapshot = await getDocs(collection(db, 'share'));
-  const readRecordList = querySnapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data()
-  }));
-  return readRecordList;
+  try {
+    const querySnapshot = await getDocs(collection(db, 'share'));
+    const readRecordList = await Promise.all(querySnapshot.docs.map(async (docSnapshot) => {
+      const data = docSnapshot.data();
+      if (!data.user_id) {
+        return {
+          id: docSnapshot.id,
+          ...data,
+          userNickname: 'Unknown',
+          userRegion: 'Unknown'
+        };
+      }
+      const userDocRef = doc(db, 'users', data.user_id);
+      const userDoc = await getDoc(userDocRef);
+      return {
+        id: docSnapshot.id,
+        ...data,
+        userNickname: userDoc.exists() ? userDoc.data().nickname : 'Unknown',
+        userRegion: userDoc.exists() ? userDoc.data().region : 'Unknown'
+      };
+    }));
+    return readRecordList;
+  } catch (error) {
+    throw error;
+  }
 }
 
 function Home() {
   const mainMapRef = useRef(null);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [initialLocation, setInitialLocation] = useState(null);
+  const [isMapInitialized, setIsMapInitialized] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
 
   const { isLoading, data } = useQuery({
     queryKey: ['home'],
@@ -45,27 +65,83 @@ function Home() {
     keepPreviousData: true,
   });
 
-  useEffect(() => {
-    if (data) {
-      mapMark(mainMapRef.current, data, setSelectedRecord, selectedRecord, initialLocation);
-      mapCached = true;
+  const updateMapCenter = (coords) => {
+    if (mapInstance) {
+      mapInstance.setCenter(coords);
+    } else {
+      console.error("Map instance is not initialized.");
     }
-  }, [data, selectedRecord, initialLocation]);
+  };
 
   useEffect(() => {
-    if (!mapInstance && mainMapRef.current) {
-      mapInstance = new kakao.maps.Map(mainMapRef.current, {
-        center: new kakao.maps.LatLng(37.559690, 126.998518),
-        level: 5,
-      });
+    const initMap = async () => {
+      await loadKakaoMap();
+      if (!mapInstance && mainMapRef.current && window.kakao) {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const lat = position.coords.latitude;
+              const lon = position.coords.longitude;
+              const coords = new kakao.maps.LatLng(lat, lon);
+              mapInstance = new kakao.maps.Map(mainMapRef.current, {
+                center: coords,
+                level: 5,
+              });
+              setUserLocation(coords);
+              setInitialLocation(coords);
+              updateMapCenter(coords);
+              setIsMapInitialized(true);
+            },
+            (error) => {
+              const defaultCoords = new kakao.maps.LatLng(37.559690, 126.998518);
+              mapInstance = new kakao.maps.Map(mainMapRef.current, {
+                center: defaultCoords,
+                level: 5,
+              });
+              setInitialLocation(defaultCoords);
+              updateMapCenter(defaultCoords);
+              setIsMapInitialized(true);
+            }
+          );
+        } else {
+          const defaultCoords = new kakao.maps.LatLng(37.559690, 126.998518);
+          mapInstance = new kakao.maps.Map(mainMapRef.current, {
+            center: defaultCoords,
+            level: 5,
+          });
+          setInitialLocation(defaultCoords);
+          updateMapCenter(defaultCoords);
+          setIsMapInitialized(true);
+        }
+      }
+    };
+    initMap();
+  }, [mainMapRef]);
+
+  useEffect(() => {
+    if (data && isMapInitialized && mapInstance) {
+      mapMark(mapInstance, data, setSelectedRecord, selectedRecord);
     }
-  }, [mainMapRef.current]);
+  }, [data, isMapInitialized, selectedRecord]);
+
+  useEffect(() => {
+    return () => {
+      mapInstance = null;
+      setIsMapInitialized(false);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (mainMapRef.current && mapInstance) {
+      kakao.maps.event.trigger(mapInstance, 'resize');
+    }
+  }, [mainMapRef]);
 
   return (
     <>
       <Helmet>
         <title>LIVE:ON - 홈</title>
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
           property="og:title"
@@ -134,17 +210,18 @@ function Home() {
             )}
 
             <motion.div
-              initial={{ opacity: mapCached ? 1 : 0 }}
-              animate={{ opacity: mapCached ? 1 : 1 }}
-              transition={{ delay: mapCached ? 0 : 0.9 }}
+              initial={{ opacity: isMapInitialized ? 1 : 0 }}
+              animate={{ opacity: isMapInitialized ? 1 : 0 }}
+              transition={{ delay: isMapInitialized ? 0 : 0.9 }}
               className="w-full h-[65vh]"
             >
               <Button
                 type="button"
                 className={`${styles.button} left-2 bottom-16 bg-white p-2`}
                 onClick={() => {
-                  mapMark(mainMapRef.current, data, setSelectedRecord, selectedRecord, initialLocation);
-                  mapCached = true;
+                  if (initialLocation) {
+                    updateMapCenter(initialLocation);
+                  }
                 }}
               >
                 <h3 className="sr-only">기존 위치로 돌아가기</h3>
@@ -158,7 +235,7 @@ function Home() {
                 type="button"
                 className={`${styles.button} left-2 bottom-2 bg-white p-2`}
                 onClick={() => {
-                  currentLocation(mapInstance, setInitialLocation);
+                  currentLocation(mapInstance, updateMapCenter, setUserLocation);
                 }}
               >
                 <h3 className="sr-only">현재 위치</h3>
@@ -191,7 +268,7 @@ function Home() {
               <li className="rounded-2xl p-5 m-6 bg-white" key={selectedRecord.id}>
                 <Link to={`/products/${selectedRecord.id}`}>
                   <span className="font-semibold bg-line-400 text-greenishgray-800 p-2 rounded-xl">
-                    배달쉐어
+                    {selectedRecord.category}
                   </span>
                   <div className="relative mb-4">
                     <span className={`font-bold absolute ${selectedRecord.status === '모집중' ? 'text-primary-500' : selectedRecord.status === '쉐어중' ? 'text-primary-300' : 'text-greenishgray-500'}`}>
@@ -205,10 +282,10 @@ function Home() {
                   <div className="flex justify-between text-xs">
                     <div>
                       <span className="text-greenishgray-600">
-                        {selectedRecord.region}
+                        {selectedRecord.userRegion}
                       </span>
                       <span className="text-primary-500 font-bold ml-2">
-                        {selectedRecord.nickname}
+                        {selectedRecord.userNickname}
                       </span>
                     </div>
                     <span className="text-greenishgray-600">

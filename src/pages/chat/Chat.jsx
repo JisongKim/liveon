@@ -53,7 +53,7 @@ const Chat = () => {
 
     fetchChat();
 
-    const q = query(collection(db, 'messages'), where('chat_id', '==', id));
+    const q = query(collection(db, 'messages'), where('chat_id', '==', id), orderBy('timestamp')); // orderBy 추가
     const unsubscribe = onSnapshot(q, async (querySnapshot) => {
       const messagesData = [];
       const senderUids = new Set();
@@ -64,8 +64,6 @@ const Chat = () => {
         senderUids.add(data.sender);
       });
 
-      // 처음에 메시지를 시간 순서대로 정렬
-      messagesData.sort((a, b) => a.timestamp.seconds - b.timestamp.seconds);
       setMessages(messagesData);
       await fetchUserProfiles(Array.from(senderUids));
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -86,9 +84,6 @@ const Chat = () => {
 
     await addDoc(collection(db, 'messages'), messageData);
     setNewMessage('');
-
-    // 새로운 메시지가 추가될 때마다 해당 메시지를 맨 아래에 추가
-    setMessages(prevMessages => [...prevMessages, messageData]);
   };
 
   return (
@@ -125,7 +120,7 @@ const Chat = () => {
                 </div>
                 <div>{text}</div>
                 <div className="text-xs text-gray-600">
-                  {new Date(timestamp.seconds * 1000).toLocaleString()}
+                  {timestamp instanceof Date ? timestamp.toLocaleString() : new Date(timestamp.seconds * 1000).toLocaleString()}
                 </div>
               </div>
             ))}
