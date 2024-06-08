@@ -1,4 +1,4 @@
-import { pb } from '@/api/pocketbase';
+//import { pb } from '@/api/pocketbase';
 import crownSmall from '@/assets/icons/crownSmall.svg';
 import dinner from '@/assets/icons/dinner.svg';
 import location from '@/assets/icons/location.svg';

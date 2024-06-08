@@ -1,6 +1,6 @@
-import {pb} from '@/api/pocketbase';
+//import {pb} from '@/api/pocketbase';
 import Header from '@/layout/Header';
-import { getPbImageURL } from '@/utils/getPbImageURL';
+//import { getPbImageURL } from '@/utils/getPbImageURL';
 import { ClientResponseError } from 'pocketbase';
 import { useState } from 'react';
 import {useEffect} from 'react';

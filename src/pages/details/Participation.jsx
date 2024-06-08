@@ -1,4 +1,4 @@
-import {pb} from '@/api/pocketbase';
+//import {pb} from '@/api/pocketbase';
 import logo from '@/assets/icons/logo.svg';
 import {AnimatePresence, motion} from 'framer-motion';
 import {func} from 'prop-types';

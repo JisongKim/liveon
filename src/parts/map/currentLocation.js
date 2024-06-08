@@ -1,3 +1,5 @@
+// currentLocation 20240604
+
 import currentSpot from '@/assets/icons/currentSpot.svg';
 
 const {kakao} = window;
@@ -6,14 +8,16 @@ export function currentLocation(mapElement) {
   if (kakao) {
     const container = mapElement;
     const options = {
-      center: new kakao.maps.LatLng(37.57157200866145, 126.9763416696016),
-      level: 4,
+      center: new kakao.maps.LatLng(37.559750, 126.998320),
+      level: 3,
     };
     const map = new kakao.maps.Map(container, options);
     const geocoder = new kakao.maps.services.Geocoder();
 
+  
+
     geocoder.addressSearch(
-      '서울특별시 종로구 관훈동 30-9',
+      '서울특별시 중구 필동로1길 30',
       function (result, status) {
         if (status === kakao.maps.services.Status.OK) {
           const {y, x} = result[0];

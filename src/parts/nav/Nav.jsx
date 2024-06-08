@@ -4,6 +4,8 @@ import {NavLink} from 'react-router-dom';
 import HomeIcon from './HomeIcon';
 import ProfileIcon from './ProfileIcon';
 import SearchIcon from './SearchIcon';
+import { useEffect, useState } from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 function Nav({
   homeSize,
@@ -16,6 +18,22 @@ function Nav({
   searchSpan,
   profileSpan,
 }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // 인증 상태를 로딩 중일 때 표시할 컴포넌트
+  }
   return (
     <nav className="bg-white fixed bottom-0 max-w-xl w-full py-3 z-50">
       <ul className="flex justify-around">
@@ -36,8 +54,8 @@ function Nav({
           </NavLink>
         </li>
         <li>
-          {!localStorage.getItem('pocketbase_auth') ? (
-            <NavLink to="/signin">
+          {user ? (
+            <NavLink to="/profile">
               <div className={styles.nav}>
                 <ProfileIcon
                   profileSize={profileSize}
@@ -47,7 +65,7 @@ function Nav({
               </div>
             </NavLink>
           ) : (
-            <NavLink to="/profile">
+            <NavLink to="/signin">
               <div className={styles.nav}>
                 <ProfileIcon
                   profileSize={profileSize}

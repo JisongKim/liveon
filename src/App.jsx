@@ -2,13 +2,12 @@ import { createContext, useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 import { RouterProvider } from 'react-router-dom';
-import AuthProvider from './context/Auth';
 import router from './routes';
-import { pb } from './api/pocketbase';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Spinner from './components/Spinner';
 import { Suspense } from 'react';
+import './firebase';
 
 export const AppContext = createContext();
 
@@ -22,7 +21,6 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  pb.autoCancellation(false);
   const [createRoomForm, setCreateRoomForm] = useState({
     category: '',
     title: '',
@@ -54,7 +52,6 @@ function App() {
   return (
     <>
       <HelmetProvider>
-        <AuthProvider>
           <QueryClientProvider client={queryClient}>
             <AppContext.Provider value={appState}>
               <div className="max-w-xl mx-auto font-pretendard">
@@ -67,7 +64,6 @@ function App() {
             </AppContext.Provider>
             <ReactQueryDevtools />
           </QueryClientProvider>
-        </AuthProvider>
       </HelmetProvider>
 
       <Toaster />

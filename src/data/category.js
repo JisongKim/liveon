@@ -1,7 +1,8 @@
 export const category = [
-  { img: "/category/total.svg", title: "전체", path: "/products" },
-  { img: "/category/vegetable.svg", title: "채소", path: "/vegetable" },
-  { img: "/category/fruit.svg", title: "과일", path: "/fruit" },
-  { img: "/category/grains.svg", title: "곡류", path: "/grains" },
-  { img: "/category/meat.svg", title: "육류", path: "/meat" },
+  { img: "/category/sharetotal.svg", title: "전체 쉐어", path: "/products" },
+  { img: "/category/food.svg", title: "배달쉐어", path: "/food" },
+  { img: "/category/shopping.svg", title: "공동구매", path: "/shopping" },
+  { img: "/category/hobby.svg", title: "취미", path: "/hobby" },
+  { img: "/category/notepad.svg", title: "자유게시판", path: "/freeBoard" },
+  { img: "/category/anonymous.svg", title: "익명게시판", path: "/anonymous" },
 ];

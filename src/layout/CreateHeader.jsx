@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import close from '@/assets/icons/close.svg';
-import logo from '@/assets/icons/logo.svg';
+import logo from '@/assets/icons/logo2.svg';
 
 function CreateHeader({ ...restProps }) {
   return (

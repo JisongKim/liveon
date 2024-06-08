@@ -1,4 +1,4 @@
-import {pb} from '@/api/pocketbase';
+//import {pb} from '@/api/pocketbase';
 import participateNum from '@/assets/icons/participateNum.svg';
 import pickuptime from '@/assets/icons/pickuptime.svg';
 import Spinner from '@/components/Spinner';

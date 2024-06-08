@@ -1,12 +1,12 @@
-import {pb} from '@/api/pocketbase';
 import Button from '@/components/Button';
 import FormInput from '@/components/FormInput';
 import Header from '@/layout/Header';
+import toast from 'react-hot-toast';
 import {debounce} from '@/utils/debounce';
-import {ClientResponseError} from 'pocketbase';
 import {useState} from 'react';
 import {Helmet} from 'react-helmet-async';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 function SignIn() {
   const {state} = useLocation();
@@ -21,26 +21,33 @@ function SignIn() {
   const handleSignIn = async (e) => {
     e.preventDefault();
 
-    const {email, password} = formState;
+    const { email, password } = formState;
+    const auth = getAuth();
 
     try {
-      await pb.collection('users').authWithPassword(email, password);
+      // 파이어베이스 인증으로 로그인
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
 
       if (!state) {
         navigate('/');
       } else {
-        const {wishLocationPath} = state;
+        const { wishLocationPath } = state;
         navigate(wishLocationPath === '/signin' ? '/' : wishLocationPath);
       }
     } catch (error) {
-      if (!(error instanceof ClientResponseError)) {
-        console.error(error);
-      }
+      console.error(error);
+      toast.error('로그인에 실패했습니다.', {
+        position: 'top-center',
+        ariaProps: {
+          role: 'status',
+          'aria-live': 'polite',
+        },
+      });
     }
   };
 
   const handleInput = debounce((e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     setFormState({
       ...formState,
       [name]: value,
@@ -50,31 +57,31 @@ function SignIn() {
   return (
     <>
       <Helmet>
-        <title>R09M - 로그인</title>
+        <title>LIVE:ON - 로그인</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
           property="og:title"
-          content="합리적인 소비를 위한 공동구매 서비스 R09M 로그인 페이지"
+          content="자취인 전용 위치기반 커뮤니티 리본(LIVE: ON) 로그인 페이지"
         />
         <meta
           property="twitter:title"
-          content="합리적인 소비를 위한 공동구매 서비스 R09M 로그인 페이지"
+          content="자취인 전용 위치기반 커뮤니티 리본(LIVE: ON) 로그인 페이지"
         />
         <meta property="og:type" content="web application" />
-        <meta property="og:url" content="https://r09m.vercel.app/signin" />
+        <meta property="og:url" content="https://LIVEON.vercel.app/signin" />
         <meta
           property="og:description"
-          content="R09M 로그인 페이지입니다. 인증된 사용자만 공동구매에 참여할 수 있습니다."
+          content="LIVE:ON 로그인 페이지입니다. 인증된 사용자만 공동구매에 참여할 수 있습니다."
         />
         <meta
           name="description"
-          content="R09M 로그인 페이지입니다. 인증된 사용자만 공동구매에 참여할 수 있습니다."
+          content="LIVE:ON 로그인 페이지입니다. 인증된 사용자만 공동구매에 참여할 수 있습니다."
         ></meta>
         <meta property="og:image" content="favicon.png" />
         <meta property="og:article:author" content="Ready! Act" />
       </Helmet>
-      <h1 className="sr-only">R09M</h1>
+      <h1 className="sr-only">LIVE:ON</h1>
 
       <div className="px-4 py-2">
         <Header />

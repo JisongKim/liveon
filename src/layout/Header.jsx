@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom';
 import prev from '@/assets/icons/prev.svg';
 import {string} from 'prop-types';
-import logo from '@/assets/icons/logo.svg';
+import logo from '@/assets/icons/logo2.svg';
 
 function Header({link = '/home'}) {
   return (

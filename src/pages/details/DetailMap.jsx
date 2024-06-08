@@ -1,4 +1,4 @@
-import {pb} from '@/api/pocketbase';
+//import {pb} from '@/api/pocketbase';
 import myLocation from '@/assets/icons/myLocation.svg';
 import pickup from '@/assets/icons/pickup.svg';
 import Button from '@/components/Button';

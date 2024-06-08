@@ -20,10 +20,10 @@ function Title({ value = "" }) {
         value={data}
         onChange={handleInputChange}
         type="text"
-        placeholder="상품명을 입력해주세요."
+        placeholder="제목을 입력해주세요."
         labelClassName="product name"
         inputClassName="defaultInput w-full"
-        label="상품명"
+        label="제목"
       />
     </>
   );

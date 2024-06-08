@@ -10,7 +10,7 @@ export default {
         'primary-800': '#103D25',
         'primary-700': '#1B653D',
         'primary-600': '#258D55',
-        'primary-500': '#30B66E',
+        'primary-500': '#f6b26b',
         'primary-400': '#49CF87',
         'primary-300': '#72DAA2',
         'primary-200': '#EBF8E8',

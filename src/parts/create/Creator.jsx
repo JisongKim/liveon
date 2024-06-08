@@ -1,64 +1,36 @@
-import {AppContext} from '@/App';
-import {pb} from '@/api/pocketbase';
+import { AppContext } from '@/App';
 import FormInput from '@/components/FormInput';
-import {ClientResponseError} from 'pocketbase';
-import {useContext, useEffect, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '@/firebase'; // Firestore 초기화 파일 임포트
 
 function Creator() {
-  const {updateCreateRoomForm} = useContext(AppContext);
-  const [, setProductIdData] = useState('');
-  const navigate = useNavigate();
-
-  const [localStorageId] = useState(
-    localStorage.getItem('pocketbase_auth')
-      ? () => JSON.parse(localStorage.getItem('pocketbase_auth')).model.id
-      : navigate('/signin')
-  );
-
+  const { updateCreateRoomForm } = useContext(AppContext);
   const [idData, setIdData] = useState({});
 
   useEffect(() => {
-    if (idData.id) {
-      updateCreateRoomForm('creator', {id: idData.id, name: idData.name});
-    }
-  }, [idData]);
-
-  useEffect(() => {
-    async function readUserId() {
+    const fetchUserData = async (userId) => {
       try {
-        const pocketHostId = await pb.collection('users').getFullList();
-
-        pocketHostId.filter((idList) => {
-          if (idList.id === localStorageId) {
-            setIdData(idList);
-          }
-        });
-      } catch (error) {
-        if (!(error instanceof ClientResponseError)) {
-          console.error(error);
+        const userRef = doc(db, 'users', userId);
+        const userSnapshot = await getDoc(userRef);
+        if (userSnapshot.exists()) {
+          const userData = userSnapshot.data();
+          setIdData(userData);
+          updateCreateRoomForm('creator', { id: userId, name: userData.name });
+        } else {
+          console.log('No data available');
         }
-      }
-    }
-
-    async function readProductId() {
-      try {
-        const productId = await pb.collection('products').getFullList({
-          expand: 'creator',
-          filter: `creator.id="${localStorageId}"`,
-        });
-
-        setProductIdData(productId);
       } catch (error) {
-        if (!(error instanceof ClientResponseError)) {
-          console.error(error);
-        }
+        console.error('Error fetching user data:', error);
       }
-    }
+    };
 
-    readUserId();
-    readProductId();
-  }, []);
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (user) {
+      fetchUserData(user.uid);
+    }
+  }, [updateCreateRoomForm]);
 
   return (
     <>

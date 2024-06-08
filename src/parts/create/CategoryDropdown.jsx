@@ -1,10 +1,16 @@
 import { AppContext } from '@/App';
-import { category } from '@/data/category';
 import { useContext, useEffect, useState } from 'react';
 
 function CategoryDropdown({ value, className }) {
   const { updateCreateRoomForm } = useContext(AppContext);
   const [selectedCategory, setSelectedCategory] = useState(value);
+
+  // 필터링할 카테고리 목록
+  const filteredCategories = [
+    { title: "배달쉐어" },
+    { title: "공동구매" },
+    { title: "취미" },
+  ];
 
   useEffect(() => {
     updateCreateRoomForm('category', selectedCategory);
@@ -22,9 +28,9 @@ function CategoryDropdown({ value, className }) {
         className={className}
         name="category"
       >
-        {category.map((list) => (
-          <option key={list.title} value={list.title}>
-            {list.title}
+        {filteredCategories.map((category) => (
+          <option key={category.title} value={category.title}>
+            {category.title}
           </option>
         ))}
       </select>

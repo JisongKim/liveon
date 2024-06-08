@@ -1,4 +1,4 @@
-import {pb} from '@/api/pocketbase';
+//import {pb} from '@/api/pocketbase';
 import complete from '@/assets/icons/complete.svg';
 import proceeding from '@/assets/icons/proceeding.svg';
 import waiting from '@/assets/icons/waiting.svg';
@@ -48,7 +48,7 @@ function ChangeStatus() {
   useEffect(() => {
     async function detailProgress() {
       try {
-        const getStatus = await pb.collection('products').getOne(id);
+        //const getStatus = await pb.collection('products').getOne(id);
         setData(getStatus);
       } catch (error) {
         throw new Error(error);

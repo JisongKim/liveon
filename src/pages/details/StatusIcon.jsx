@@ -1,7 +1,7 @@
 import {number, string} from 'prop-types';
 
 function StatusIcon({
-  width = 80,
+  width = 90,
   height = 36,
   color = '#F1F4F4',
   text,
@@ -14,7 +14,7 @@ function StatusIcon({
       <svg
         width={width}
         height={height}
-        viewBox="0 0 78 36"
+        viewBox="0 0 70 36"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >

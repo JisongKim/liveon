@@ -15,14 +15,19 @@ const SignIn = lazy(() => import('./pages/auth/SignIn'));
 const SignUp = lazy(() => import('./pages/auth/SignUp'));
 const ChangeStatus = lazy(() => import('./pages/details/ChangeStatus'));
 const Detail = lazy(() => import('./pages/details/Detail'));
+const PostDetail = lazy(() => import('./pages/details/PostDetail'));
+const ShareDetail = lazy(() => import('./pages/details/ShareDetail'));
 const DetailMap = lazy(() => import('./pages/details/DetailMap'));
-const Fruit = lazy(() => import('./pages/products/Fruit'));
-const Grains = lazy(() => import('./pages/products/Grains'));
-const Meat = lazy(() => import('./pages/products/Meat'));
+const Food = lazy(() => import('./pages/products/Food'));
+const Shopping = lazy(() => import('./pages/products/Shopping'));
+const FreeBoard = lazy(() => import('./pages/posts/FreeBoard'));
+const Anonymous = lazy(() => import('./pages/posts/Anonymous'));
 const Total = lazy(() => import('./pages/products/Total'));
-const Vegetable = lazy(() => import('./pages/products/Vegetable'));
+const Hobby = lazy(() => import('./pages/products/Hobby'));
 const Users = lazy(() => import('./pages/users/Users'));
 const DetailStatus = lazy(() => import('./pages/details/DetailStatus'));
+const AnonymousDetail = lazy(() => import('./pages/details/AnonymousDetail'));
+const Chat = lazy(() => import('./pages/chat/Chat'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,10 +35,11 @@ const router = createBrowserRouter(
       <Route path="/" element={<Logo />} />
       <Route path="/home" element={<Home />} />
       <Route path="products" element={<Total />} />
-      <Route path="vegetable" element={<Vegetable />} />
-      <Route path="fruit" element={<Fruit />} />
-      <Route path="grains" element={<Grains />} />
-      <Route path="meat" element={<Meat />} />
+      <Route path="food" element={<Food />} />
+      <Route path="hobby" element={<Hobby />} />
+      <Route path="shopping" element={<Shopping />} />
+      <Route path="freeBoard" element={<FreeBoard />} />
+      <Route path="anonymous" element={<Anonymous />} />
       <Route path="search" element={<Search />} />
 
       <Route path="signup" element={<SignUp />} />
@@ -42,7 +48,10 @@ const router = createBrowserRouter(
       <Route path="profile" element={<Profile />} />
       <Route path="profile/:id" element={<ChangeStatus />} />
 
-      <Route path="products/:id" element={<Detail />} />
+      {/* <Route path="products/:id" element={<Detail />} /> */}
+      <Route path="products/:id" element={<ShareDetail />} />
+      <Route path="posts/:id" element={<PostDetail />} />
+      <Route path="posts/anonymous/:id" element={<AnonymousDetail />} />
 
       <Route path="products/:id/pickupplace" element={<DetailMap />} />
       <Route path="products/:id/status" element={<DetailStatus />} />
@@ -50,6 +59,7 @@ const router = createBrowserRouter(
 
       <Route path="createroom" element={<CreateRoom />} />
       <Route path="location" element={<Location />} />
+      <Route path="chat/:id" element={<Chat />} />
     </>
   )
 );
